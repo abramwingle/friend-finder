@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+                <!-- Modal content-->
+                <div class="container">
+
+                    <button id="submitButton" type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#newBestDisplay">
+                        Submit
+                    </button>
+
+                    <div id="newBestDisplay" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h3 class="modal-title">Your New Best Friend</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <h2 id="newBest"></h2>
+                                    <img id="newBestPhoto" src="#">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</body>
+
+<script type="text/javascript">
+    $("#submitButton").on("click", function (event) {
+        event.preventDefault();
+
+        var isComplete = true;
+        if ($("#userName").val() === "" || $("#userPhoto").val() === "") {
+            isComplete = false;
+        } else if ($("#question1").val() === "empty" || $("#question2").val() === "empty" || $("#question3").val() === "empty" || $("#question4").val() === "empty" || $("#question5").val() === "empty" || $("#question6").val() === "empty" || $("#question7").val() === "empty" || $("#question8").val() === "empty" || $("#question9").val() === "empty" || $("#question10").val() === "empty") {
+            isComplete = false;
+        }
+
+        else if (isComplete === true) {
+            var scores = [];
+            scores.push($("#question1").val());
+            scores.push($("#question2").val());
+            scores.push($("#question3").val());
+            scores.push($("#question4").val());
+            scores.push($("#question5").val());
+            scores.push($("#question6").val());
+            scores.push($("#question7").val());
+            scores.push($("#question8").val());
+            scores.push($("#question9").val());
+            scores.push($("#question10").val());
+            scores.push($("#question11").val());
+
+
+
+            var newUser = {
+                name: $("#userName").val().trim(),
+                photo: $("#userPicture").val().trim(),
+                scores: scores
+
+            };
+            var currentURL = window.location.origin;
+            // Ajax call for receiving response after POST req
+            $.post(currentURL + "/api/friends", newUser, function (data) {
+                $("#newBest").text(data.name);
+                $("#newBestPhoto").attr("src", data.photo);
+                $("#newBestDisplay").modal("show");
+            });
+        } else {
+            // If a required field is missing, show alert
+            alert("You need to answer every question!");
+        }
+    });
+
+</script>
+
+</html>
